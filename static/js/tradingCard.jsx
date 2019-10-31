@@ -1,23 +1,3 @@
-var tradingCardData = [
-  {
-    name: 'Balloonicorn',
-    skill: 'video games',
-    imgUrl: '/static/img/balloonicorn.jpg'
-  },
-
-  {
-    name: 'Float',
-    skill: 'baking pretzels',
-    imgUrl: '/static/img/float.jpg'
-  },
-
-  {
-    name: 'Llambda',
-    skill: 'knitting scarves',
-    imgUrl: '/static/img/llambda.jpg'
-  }
-];
-
 class TradingCard extends React.Component {
   render() {
     return (
@@ -31,11 +11,32 @@ class TradingCard extends React.Component {
 }
 
 class TradingCardContainer extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {cards: []}; 
+    this.updateCards = this.updateCards.bind(this);
+  }
+
+  updateCards(response) { // how does response from AJAX request flow here?
+    const cards = response.cards;
+    this.setState({ cards: cards});
+    };
+  
+
+  getCardData() {
+    $.get("/cards.json", this.updateCards); // $.get(URL, successfunction)
+  }
+
+  componentDidMount() {
+    this.getCardData();
+  }
+
   render() {
     const tradingCards = [];
 
-    for (const currentCard of tradingCardData) {
-      paragraphs.push(
+    for (const currentCard of this.state.cards) {
+      tradingCards.push(
         <TradingCard
           key={currentCard.name}
           name={currentCard.name}
@@ -46,7 +47,7 @@ class TradingCardContainer extends React.Component {
     }
 
     return (
-      <div>{paragraphs}</div>
+      <div>{tradingCards}</div>
     );
   }
 }
