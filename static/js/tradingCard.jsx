@@ -1,3 +1,64 @@
+class TradingCardForm extends React.Component {
+  constructor() {
+    super()
+
+    this.state = {
+      name: '',
+      skill: ''
+    };
+
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleSkillChange = this.handleSkillChange.bind(this);
+    this.addNewCard = this.addNewCard.bind(this);
+  }
+
+  addNewCard() {
+    // FIXME
+    const data = {
+      name: this.state.name,
+      skill: this.state.skill
+    }; 
+
+    $.post('/add-card', data, alert('we added a card!'));
+  }
+
+  updateCards() {
+    alert('done adding card!');
+  }
+
+  handleNameChange(e) {
+    this.setState({ name: e.target.value });
+  }
+
+  handleSkillChange(e) {
+    this.setState({ skill: e.target.value });
+  }
+
+  render() {
+    return (
+      <form>
+        <label for="name">Name:</label>
+        <input
+          id="name"
+          type="text"
+          value={this.state.name}
+          onChange={this.handleNameChange}
+        />
+
+        <label for="skill">Skill:</label>
+        <input
+          id="skill"
+          type="text"
+          value={this.state.skill}
+          onChange={this.handleSkillChange}
+        />
+
+        <button onClick={this.addNewCard}>Add</button>
+      </form>
+    );
+  }
+}
+
 class TradingCard extends React.Component {
   render() {
     return (
@@ -47,7 +108,10 @@ class TradingCardContainer extends React.Component {
     }
 
     return (
-      <div>{tradingCards}</div>
+      <div>
+        <TradingCardForm />
+        <div>{tradingCards}</div>
+      </div>
     );
   }
 }
